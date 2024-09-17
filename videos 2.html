@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Vidéos</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+           padding: 0;
+           background: linear-gradient(135deg, #fff, #bb00d4 );
+           color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #ff0077, #00bcd4);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+                margin: 0;
+              font-size: 28px;
+        }
+        header:hover {
+            background-color: #004494;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-buttons button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-buttons button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .nav-buttons input[type="file"] {
+            border: none;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .nav-buttons input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            width: 250px;
+            box-sizing: border-box;
+        }
+        .nav-buttons input[type="text"]:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 80px auto 0; /* Adjust margin-top for header height */
+        }
+        #video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+        .video-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.2s;
+        }
+        .video-item:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+        .video-item video {
+            width: 100%;
+            border-radius: 6px;
+            background-color: #000;
+        }
+        .video-item input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+        }
+        .video-item button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #0056b3;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .video-item button:hover {
+            background-color: #004494;
+            transform: scale(1.05);
+        }
+        #fullscreen-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #fullscreen-video {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Gestionnaire de video</div>
+        <div class="nav-buttons">
+            <input type="file" id="video-upload" accept="video/*" multiple>
+            <button onclick="uploadVideos()"><i class="fas fa-upload"></i> Ajouter des vidéos</button>
+            <input type="text" id="search-bar" oninput="searchVideos()" placeholder="Rechercher des vidéos...">
+        </div>
+    </header>
+    
+    <div class="container">
+        <div id="video-list"></div>
+    </div>
+    
+    <div id="fullscreen-container" onclick="exitFullscreen()">
+        <video id="fullscreen-video" controls></video>
+    </div>
+
+    <script>
+        let videos = [];
+
+        function uploadVideos() {
+            const input = document.getElementById('video-upload');
+            const files = input.files;
+            
+            for (let file of files) {
+                const video = {
+                    name: file.name,
+                    url: URL.createObjectURL(file)
+                };
+                videos.push(video);
+            }
+            
+            displayVideos();
+        }
+
+        function displayVideos() {
+            const videoList = document.getElementById('video-list');
+            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            videoList.innerHTML = '';
+            
+            videos
+                .filter(video => video.name.toLowerCase().includes(searchQuery))
+                .forEach((video, index) => {
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'video-item';
+                    videoItem.innerHTML = `
+                        <video width="100%" height="auto" controls>
+                            <source src="${video.url}" type="video/mp4">
+                            Votre navigateur ne supporte pas la balise vidéo.
+                        </video>
+                        <input type="text" value="${video.name}" oninput="renameVideo(${index}, this.value)" placeholder="Nom de la vidéo">
+                        <button onclick="playFullscreen(${index})">Plein écran</button>
+                        <button onclick="deleteVideo(${index})">Supprimer</button>
+                    `;
+                    videoList.appendChild(videoItem);
+                });
+        }
+
+        function playFullscreen(index) {
+            const container = document.getElementById('fullscreen-container');
+            const video = document.getElementById('fullscreen-video');
+            
+            video.src = videos[index].url;
+            container.style.display = 'flex';
+            video.play();
+        }
+
+        function exitFullscreen() {
+            const container = document.getElementById('fullscreen-container');
+            const video = document.getElementById('fullscreen-video');
+            
+            container.style.display = 'none';
+            video.pause();
+            video.src = ''; // Stop loading the video
+        }
+
+        function deleteVideo(index) {
+            if (videos[index].url) URL.revokeObjectURL(videos[index].url); // Free up memory
+            videos.splice(index, 1);
+            displayVideos();
+        }
+
+        function renameVideo(index, newName) {
+            videos[index].name = newName;
+        }
+
+        function searchVideos() {
+            displayVideos();
+        }
+    </script>
+</body>
+</html>

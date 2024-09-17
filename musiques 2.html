@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire Avancé de Musique</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+           margin: 0;
+          padding: 0;
+          background: linear-gradient(135deg, #fff, #bb00d4 );
+          color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #00ff0d, #00bcd4);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-buttons input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #music-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .music-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+        }
+        .music-item audio {
+            width: 100%;
+        }
+        .music-item .description {
+            margin-top: 10px;
+        }
+        .music-item button {
+            background: #007bff;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: calc(100% - 20px);
+        }
+        .music-item button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestionnaire de Musique</h1>
+        <div class="nav-buttons">
+            <input type="file" id="music-upload" accept="audio/*" multiple>
+            <button onclick="uploadVideos()"><i class="fas fa-upload"></i> Ajouter des music</button>
+            <input type="text" id="search-bar" oninput="searchMusic()" placeholder="Rechercher des morceaux...">
+        </div>
+    </header>
+    <div class="container">
+        <div id="music-list"></div>
+    </div>
+    <script>
+        let music = [];
+
+        function uploadMusic() {
+            const input = document.getElementById('music-upload');
+            const files = input.files;
+            
+            for (let file of files) {
+                const audio = {
+                    name: file.name,
+                    url: URL.createObjectURL(file)
+                };
+                music.push(audio);
+            }
+            
+            displayMusic();
+        }
+
+        function displayMusic() {
+            const musicList = document.getElementById('music-list');
+            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            musicList.innerHTML = '';
+            
+            music
+                .filter(track => track.name.toLowerCase().includes(searchQuery))
+                .forEach((track, index) => {
+                    const musicItem = document.createElement('div');
+                    musicItem.className = 'music-item';
+                    musicItem.innerHTML = `
+                        <audio controls>
+                            <source src="${track.url}" type="audio/mp3">
+                        </audio>
+                        <div class="description">
+                            <input type="text" value="${track.name}" oninput="renameMusic(${index}, this.value)" placeholder="Nom du morceau">
+                            <button onclick="deleteMusic(${index})">Supprimer</button>
+                        </div>
+                    `;
+                    musicList.appendChild(musicItem);
+                });
+        }
+
+        function renameMusic(index, newName) {
+            music[index].name = newName;
+        }
+
+        function deleteMusic(index) {
+            URL.revokeObjectURL(music[index].url);
+            music.splice(index, 1);
+            displayMusic();
+        }
+
+        function searchMusic() {
+            displayMusic();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+           
+            height: 100vh;
+            background: linear-gradient(135deg, #fff, #bb00d4 );
+            
+        }
+
+        form{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 90px;
+            height: 25%;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0051ff, #bb00d4 );
+            
+        }
+
+        input{
+            margin: 10px 0;
+            padding: 15px 30px;
+            border-radius: 8px;
+            width: 90%;
+            background: linear-gradient(135deg, #5900ff, #c6d400 );
+           
+
+        }
+
+        button{
+            background-color: rgb(0, 255, 247);
+            color: black;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+
+        }
+    </style>
+</head>
+<body >
+    
+    <form id="loginForm">
+       <h1> BINVENUE</h1>
+        <input type="text" id="username" name="username" placeholder="Numero" required>
+        <input type="password" id="password" name="password" placeholder="password" required>
+        <input type="submit" value="Se connecter">
+    </form>
+
+    
+     </div>
+
+     <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche l'envoi du formulaire pour traitement JavaScript
+            
+            // Exemple simple de validation
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            
+            if (username === "89313436" && password === "521214") {
+                window.location.href = "page d'accuiel 2.html";
+            } else {
+                alert("Nom d'utilisateur ou mot de passe incorrect");
+            }
+        });
+     </script>
+</body>
+</html>

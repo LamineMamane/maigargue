@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil</title>
+    
+</head>
+<style>
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #fff, #bb00d4 );
+            
+    color: #333;
+}
+
+header {
+    background: linear-gradient(135deg, #007bff, #00d471);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.nav-buttons a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.nav-buttons a:hover {
+    background: red;
+    color: #007bff;
+}
+
+.container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero {
+    background: url('multumedia.jpg') no-repeat center center/cover;
+    color: black;
+    text-align: center;
+    padding: 40px 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0.2, 0.3, 0.4, 0.5);
+    z-index: 1;
+}
+
+.hero h2 {
+    font-size: 36px;
+    margin: 0;
+    z-index: 2;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-top: 10px;
+    z-index: 2;
+}
+
+
+
+
+.hero button:hover {
+    background: #007bff;
+    transform: scale(1.05);
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: linear-gradient(135deg, #ffffff, #00d494 );
+    border-radius: 10px;
+    overflow:hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+   padding: 75px;
+    height: 200px;
+}
+
+.card img {
+    width: 85%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 30px;
+}
+
+.card h3 {
+    font-size: 15px;
+    margin: 0;
+    color: #333;
+}
+
+.card p {
+    font-size: 16px;
+    color: #666;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #007bff;
+    border: 2px solid #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.card a:hover {
+    background: #007bff;
+    color: white;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(135deg,   #00d471, #007bff);
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+</style>
+<body>
+    <header>
+        <h1>Gestionnaire de Médias</h1>
+        <nav class="nav-buttons">
+            <a href="photos 2.html">Images</a>
+            <a href="videos 2.html">Vidéos</a>
+            <a href="musiques 2.html">Musique</a>
+            <a href="index.html">Deconnecter</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="hero">
+            <h2>Bienvenue sur votre Gestionnaire de Médias</h2>
+            <p>Organisez et accédez facilement à vos images, vidéos et musique.</p>
+            
+        </div>
+        <div class="cards">
+            <div class="card" onclick="navigate('images.html')">
+                <img src="Image.jpg" alt="Images">
+                <div class="card-content">
+                    <h3>Images</h3>
+                    
+                    <a href="photos 2.html">Accéder aux Images</a>
+                </div>
+            </div>
+            <div class="card" onclick="navigate('videos.html')">
+                <img src="Vidéo.jpg" alt="Vidéos">
+                <div class="card-content">
+                    <h3>Vidéos</h3>
+                    
+                    <a href="videos 2.html">Accéder aux Vidéos</a>
+                </div>
+            </div>
+            <div class="card" onclick="navigate('musique.html')">
+                <img src="IMG_20240915_091123.jpg" alt="Musique">
+                <div class="card-content">
+                    <h3>Musique</h3>
+                   
+                    <a href="musiques 2.html">Accéder à la Musique</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Gestionnaire de Médias. Tous droits réservés.</p>
+    </footer>
+    <script>
+
+
+// Function to navigate to different pages
+function navigate(url) {
+    window.location.href = url;
+}
+
+// Event listener for the explore button
+document.getElementById('explore-btn').addEventListener('click', function() {
+    window.location.href = 'photos 2.html'; // You can adjust the target page
+});
+
+    </script>
+</body>
+</html>
